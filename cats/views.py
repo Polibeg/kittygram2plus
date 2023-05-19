@@ -22,6 +22,7 @@ class CatViewSet(viewsets.ModelViewSet):
     filterset_fields = ('color', 'birth_year')
     search_fields = ('name',)
     ordering_fields = ('name', 'birth_year')
+    ordering = ('birth_year',)
     
     def get_queryset(self):
         queryset = Cat.objects.all()
