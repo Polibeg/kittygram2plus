@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.throttling import ScopedRateThrottle
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .throttling import WorkingHoursRateThrottle
 from .models import Achievement, Cat, User
@@ -14,9 +15,19 @@ class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
     permission_classes = (OwnerOrReadOnly,)
+    filter_backends = (DjangoFilterBackend,)
+    pagination_class = None
+    filterset_fields = ('color', 'birth_year')
     throttle_classes = (WorkingHoursRateThrottle, ScopedRateThrottle)
     throttle_scope = 'low_request'
-    pagination_class = CatsPagination
+    #pagination_class = CatsPagination
+    
+    def get_queryset(self):
+        queryset = Cat.objects.all()
+        color = self.request.query_params.get('color')
+        if color is not None:
+            queryset = queryset.filter(color=color)
+        return queryset 
 
     def get_permissions(self):
     # Если в GET-запросе требуется получить информацию об объекте
