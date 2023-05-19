@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework.pagination import LimitOffsetPagination
 
 from .throttling import WorkingHoursRateThrottle
 from .models import Achievement, Cat, User
@@ -16,6 +17,7 @@ class CatViewSet(viewsets.ModelViewSet):
     permission_classes = (OwnerOrReadOnly,)
     throttle_classes = (WorkingHoursRateThrottle, ScopedRateThrottle)
     throttle_scope = 'low_request'
+    pagination_class = LimitOffsetPagination
 
     def get_permissions(self):
     # Если в GET-запросе требуется получить информацию об объекте

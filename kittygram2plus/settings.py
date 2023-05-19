@@ -137,6 +137,7 @@ REST_FRAMEWORK = {
         # в меру собственной фантазии
         'low_request': '1/minute',
     }
+    
 } 
 
 SIMPLE_JWT = {
