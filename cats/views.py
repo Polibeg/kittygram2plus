@@ -16,12 +16,10 @@ class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
     permission_classes = (OwnerOrReadOnly,)
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ('achievements__name', 'owner__username')
+    ffilter_backends = (filters.SearchFilter,)
+    # Определим, что значение параметра search должно быть началом искомой строки
+    search_fields = ('^name',)
     pagination_class = None
-    throttle_classes = (WorkingHoursRateThrottle, ScopedRateThrottle)
-    throttle_scope = 'low_request'
-    #pagination_class = CatsPagination
     
     def get_queryset(self):
         queryset = Cat.objects.all()
