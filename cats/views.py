@@ -16,10 +16,12 @@ class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
     permission_classes = (OwnerOrReadOnly,)
-    ffilter_backends = (filters.SearchFilter,)
-    # Определим, что значение параметра search должно быть началом искомой строки
-    search_fields = ('^name',)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,
+                       filters.OrderingFilter)
     pagination_class = None
+    filterset_fields = ('color', 'birth_year')
+    search_fields = ('name',)
+    ordering_fields = ('name', 'birth_year')
     
     def get_queryset(self):
         queryset = Cat.objects.all()
