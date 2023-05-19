@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.throttling import ScopedRateThrottle
+from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .throttling import WorkingHoursRateThrottle
@@ -15,9 +16,9 @@ class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
     permission_classes = (OwnerOrReadOnly,)
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('achievements__name', 'owner__username')
     pagination_class = None
-    filterset_fields = ('color', 'birth_year')
     throttle_classes = (WorkingHoursRateThrottle, ScopedRateThrottle)
     throttle_scope = 'low_request'
     #pagination_class = CatsPagination
