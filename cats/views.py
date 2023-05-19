@@ -23,6 +23,8 @@ class CatViewSet(viewsets.ModelViewSet):
     search_fields = ('name',)
     ordering_fields = ('name', 'birth_year')
     ordering = ('birth_year',)
+    throttle_classes = (WorkingHoursRateThrottle, ScopedRateThrottle)
+    throttle_scope = 'low_request'
     
     def get_queryset(self):
         queryset = Cat.objects.all()
